@@ -88,12 +88,8 @@
   --border: oklch(0.9276 0.0058 264.5313);
   --input: oklch(0.9276 0.0058 264.5313);
   --ring: oklch(0.6231 0.1880 259.8145);
-  --chart-1: oklch(0.6231 0.1880 259.8145);
-  --chart-2: oklch(0.5461 0.2152 262.8809);
-  --chart-3: oklch(0.4882 0.2172 264.3763);
-  --chart-4: oklch(0.4244 0.1809 265.6377);
-  --chart-5: oklch(0.3791 0.1378 265.5222);
-  --sidebar: oklch(0.9846 0.0017 247.8389);
+
+  --sidebar: oklch(1.0000 0 0);
   --sidebar-foreground: oklch(0.3211 0 0);
   --sidebar-primary: oklch(0.6231 0.1880 259.8145);
   --sidebar-primary-foreground: oklch(1.0000 0 0);
@@ -102,6 +98,18 @@
   --sidebar-border: oklch(0.9276 0.0058 264.5313);
   --sidebar-ring: oklch(0.6231 0.1880 259.8145);
   --destructive-foreground: oklch(1.0000 0 0);
+  
+  /* Medical theme colors */
+  --mint-50: #f0fdfa;
+  --mint-100: #ccfbf1;
+  --mint-200: #99f6e4;
+  --mint-300: #5eead4;
+  --mint-400: #2dd4bf;
+  --mint-500: #14b8a6;
+  --mint-600: #0d9488;
+  --mint-700: #0f766e;
+  --mint-800: #115e59;
+  --mint-900: #134e4a;
   --font-sans: Inter, sans-serif;
   --font-serif: Source Serif 4, serif;
   --font-mono: JetBrains Mono, monospace;
@@ -143,11 +151,7 @@
   --border: oklch(0.3715 0 0);
   --input: oklch(0.3715 0 0);
   --ring: oklch(0.6231 0.1880 259.8145);
-  --chart-1: oklch(0.7137 0.1434 254.6240);
-  --chart-2: oklch(0.6231 0.1880 259.8145);
-  --chart-3: oklch(0.5461 0.2152 262.8809);
-  --chart-4: oklch(0.4882 0.2172 264.3763);
-  --chart-5: oklch(0.4244 0.1809 265.6377);
+
   --sidebar: oklch(0.2046 0 0);
   --sidebar-foreground: oklch(0.9219 0 0);
   --sidebar-primary: oklch(0.6231 0.1880 259.8145);
@@ -180,6 +184,24 @@
 }
 
 @layer base {
+  :root {
+    /* Calm, healthcare-inspired colors */
+    --chart-1: 210 40% 70%;  /* Soft blue */
+    --chart-2: 150 30% 65%;  /* Sage green */
+    --chart-3: 260 25% 75%;  /* Lavender */
+    --chart-4: 35 25% 70%;   /* Warm beige */
+    --chart-5: 180 35% 68%;  /* Soft teal */
+  }
+ 
+  .dark {
+    /* Darker but still calm variants */
+    --chart-1: 210 35% 60%;  /* Muted blue */
+    --chart-2: 150 25% 55%;  /* Darker sage */
+    --chart-3: 260 20% 65%;  /* Muted lavender */
+    --chart-4: 35 20% 60%;   /* Darker beige */
+    --chart-5: 180 30% 58%;  /* Darker teal */
+  }
+
   * {
     @apply border-border outline-ring/50;
   }

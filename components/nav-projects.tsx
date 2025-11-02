@@ -7,6 +7,8 @@ import {
   Trash2,
   type LucideIcon,
 } from "lucide-react"
+import { usePathname } from "next/navigation"
+import Link from "next/link"
 
 import {
   DropdownMenu,
@@ -35,19 +37,31 @@ export function NavProjects({
   }[]
 }) {
   const { isMobile } = useSidebar()
+  const pathname = usePathname()
+
+  // Check if a project item is active
+  const isProjectActive = (projectUrl: string) => {
+    return pathname === projectUrl || pathname.startsWith(projectUrl + '/')
+  }
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Projects</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
-              </a>
-            </SidebarMenuButton>
+        {projects.map((item) => {
+          const isActive = isProjectActive(item.url)
+          return (
+            <SidebarMenuItem key={item.name}>
+              <SidebarMenuButton 
+                asChild
+                data-active={isActive}
+                className="data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground"
+              >
+                <Link href={item.url}>
+                  <item.icon />
+                  <span>{item.name}</span>
+                </Link>
+              </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuAction showOnHover>
@@ -76,7 +90,8 @@ export function NavProjects({
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
-        ))}
+        )
+        })}
         <SidebarMenuItem>
           <SidebarMenuButton className="text-sidebar-foreground/70">
             <MoreHorizontal className="text-sidebar-foreground/70" />

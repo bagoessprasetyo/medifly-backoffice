@@ -2,16 +2,18 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
+  LayoutDashboard,
+  Building2,
+  Stethoscope,
+  Users,
+  FileText,
   Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
+  ClipboardList,
   Settings2,
-  SquareTerminal,
+  Activity,
+  Heart,
+  Wrench,
+  Package,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -25,138 +27,202 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { useAuth } from "@/lib/auth"
 
-// This is sample data.
+// Medifly.AI CMS navigation data
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   teams: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      name: "Medifly.AI",
+      logo: Heart,
+      plan: "CMS Dashboard",
     },
   ],
   navMain: [
     {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Overview",
+          url: "/dashboard",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "Analytics",
+          url: "/dashboard/analytics",
         },
         {
-          title: "Settings",
-          url: "#",
+          title: "Reports",
+          url: "/dashboard/reports",
         },
       ],
     },
     {
-      title: "Models",
-      url: "#",
+      title: "Hospitals",
+      url: "/hospitals",
+      icon: Building2,
+      items: [
+        {
+          title: "All Hospitals",
+          url: "/hospitals",
+        },
+        {
+          title: "Add Hospital",
+          url: "/hospitals/new",
+        },
+        {
+          title: "Hospital Analytics",
+          url: "/hospitals/analytics",
+        },
+      ],
+    },
+    {
+      title: "Doctors",
+      url: "/doctors",
+      icon: Stethoscope,
+      items: [
+        {
+          title: "Doctor Registry",
+          url: "/doctors",
+        },
+        {
+          title: "Add Doctor",
+          url: "/doctors/new",
+        },
+        {
+          title: "Doctor Analytics",
+          url: "/doctors/analytics",
+        },
+      ],
+    },
+    {
+      title: "Patients",
+      url: "/patients",
+      icon: Users,
+      items: [
+        {
+          title: "Dashboard",
+          url: "/patients",
+        },
+        {
+          title: "Patient Registry",
+          url: "/patients/registry",
+        },
+        {
+          title: "Analytics",
+          url: "/patients/analytics",
+        },
+        {
+          title: "Export Center",
+          url: "/patients/export",
+        },
+      ],
+    },
+    {
+      title: "Content",
+      url: "/content",
+      icon: FileText,
+      items: [
+        {
+          title: "All Content",
+          url: "/content",
+        },
+        {
+          title: "Create Content",
+          url: "/content/new",
+        },
+        {
+          title: "Categories",
+          url: "/content/categories",
+        },
+        {
+          title: "Published",
+          url: "/content/published",
+        },
+      ],
+    },
+    {
+      title: "AI Persona",
+      url: "/ai-persona",
       icon: Bot,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "Persona Config",
+          url: "/ai-persona",
         },
         {
-          title: "Explorer",
-          url: "#",
+          title: "Voice Settings",
+          url: "/ai-persona/voice",
         },
         {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          title: "Training Data",
+          url: "/ai-persona/training",
         },
       ],
     },
     {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
+      title: "Facilities",
+      url: "/facilities",
+      icon: Wrench,
       items: [
         {
-          title: "General",
-          url: "#",
+          title: "All Facilities",
+          url: "/facilities",
         },
+      ],
+    },
+    {
+      title: "Services",
+      url: "/services",
+      icon: Stethoscope,
+      items: [
         {
-          title: "Team",
-          url: "#",
+          title: "All Services",
+          url: "/services",
         },
+      ],
+    },
+    {
+      title: "Packages",
+      url: "/packages",
+      icon: Package,
+      items: [
         {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
+          title: "All Packages",
+          url: "/packages",
         },
       ],
     },
   ],
   projects: [
     {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
+      name: "Audit Logs",
+      url: "/audit-logs",
+      icon: ClipboardList,
     },
     {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
+      name: "System Health",
+      url: "/system",
+      icon: Activity,
     },
     {
-      name: "Travel",
-      url: "#",
-      icon: Map,
+      name: "Settings",
+      url: "/settings",
+      icon: Settings2,
     },
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAuth()
+
+  const userData = {
+    name: user?.email?.split('@')[0] || "User",
+    email: user?.email || "user@medifly.ai",
+    avatar: "/avatars/user.jpg",
+  }
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -167,7 +233,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={userData} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
