@@ -67,7 +67,7 @@ export function NavMain({
                   <SidebarMenuButton 
                     tooltip={item.title}
                     data-active={isActive}
-                    className="data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground"
+                    className=""
                   >
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
@@ -83,7 +83,7 @@ export function NavMain({
                           <SidebarMenuSubButton 
                             asChild
                             data-active={isSubActive}
-                            className="data-[active=true]:text-sidebar-accent-foreground data-[active=true]:font-medium"
+                            className=""
                           >
                             <Link href={subItem.url}>
                               <span>{subItem.title}</span>

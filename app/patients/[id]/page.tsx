@@ -94,12 +94,9 @@ export default function PatientProfilePage() {
   const [accessLogged, setAccessLogged] = useState(false)
 
   useEffect(() => {
-    // Simulate API call to fetch patient data
+    // Fetch patient data
     const fetchPatient = async () => {
       setIsLoading(true)
-      
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 500))
       
       const patientData = mockPatients[patientId]
       setPatient(patientData || null)

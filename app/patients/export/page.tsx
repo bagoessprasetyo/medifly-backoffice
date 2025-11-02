@@ -140,8 +140,8 @@ export default function PatientExportPage() {
 
     setIsExporting(true)
     
-    // Simulate export process
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    // Process export
+    // In a real implementation, this would call an API endpoint
     
     setIsExporting(false)
     setExportComplete(true)

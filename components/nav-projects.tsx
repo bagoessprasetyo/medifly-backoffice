@@ -55,7 +55,7 @@ export function NavProjects({
               <SidebarMenuButton 
                 asChild
                 data-active={isActive}
-                className="data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-accent-foreground"
+                className=""
               >
                 <Link href={item.url}>
                   <item.icon />

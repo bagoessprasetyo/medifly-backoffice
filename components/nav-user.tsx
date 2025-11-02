@@ -29,6 +29,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useAuth } from "@/lib/auth"
+import { toast } from "sonner"
 
 export function NavUser({
   user,
@@ -40,6 +42,21 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const { signOut } = useAuth()
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await signOut()
+      if (error) {
+        toast.error("Failed to log out: " + error.message)
+      } else {
+        toast.success("Successfully logged out")
+        // Middleware will handle the redirect to login page
+      }
+    } catch (err) {
+      toast.error("An error occurred during logout")
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -102,7 +119,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

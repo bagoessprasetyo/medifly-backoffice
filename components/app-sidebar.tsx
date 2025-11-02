@@ -152,12 +152,8 @@ const data = {
           url: "/ai-persona",
         },
         {
-          title: "Voice Settings",
-          url: "/ai-persona/voice",
-        },
-        {
-          title: "Training Data",
-          url: "/ai-persona/training",
+          title: "Knowledge Base",
+          url: "/ai-persona/knowledge-base",
         },
       ],
     },

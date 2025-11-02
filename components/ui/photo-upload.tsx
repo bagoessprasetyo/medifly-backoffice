@@ -43,11 +43,8 @@ export function PhotoUpload({
   }
 
   const simulateUpload = async (file: File): Promise<string> => {
-    // Simulate upload progress
-    for (let i = 0; i <= 100; i += 10) {
-      setUploadProgress(i)
-      await new Promise(resolve => setTimeout(resolve, 100))
-    }
+    // Set upload progress to complete immediately
+    setUploadProgress(100)
     
     // Create a local URL for preview (in real app, this would be uploaded to a server)
     return URL.createObjectURL(file)

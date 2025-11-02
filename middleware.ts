@@ -2,6 +2,18 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
+
+  // Early return for static assets and API routes to improve performance
+  if (
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/api/') ||
+    pathname.includes('.') ||
+    pathname === '/favicon.ico'
+  ) {
+    return NextResponse.next()
+  }
+
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -17,17 +29,10 @@ export async function middleware(request: NextRequest) {
           return request.cookies.get(name)?.value
         },
         set(name: string, value: string, options: any) {
-          // Update the request cookies
           request.cookies.set({
             name,
             value,
             ...options,
-          })
-          // Update the response cookies
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
           })
           response.cookies.set({
             name,
@@ -36,17 +41,10 @@ export async function middleware(request: NextRequest) {
           })
         },
         remove(name: string, options: any) {
-          // Remove from request cookies
           request.cookies.set({
             name,
             value: '',
             ...options,
-          })
-          // Remove from response cookies
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
           })
           response.cookies.set({
             name,
@@ -60,9 +58,6 @@ export async function middleware(request: NextRequest) {
 
   // Get user session
   const { data: { user }, error } = await supabase.auth.getUser()
-  
-  // Log for debugging
-  console.log('Middleware - Path:', request.nextUrl.pathname, 'User:', user?.email || 'none', 'Error:', error?.message || 'none')
 
   // Check if user is trying to access protected routes
   if (request.nextUrl.pathname.startsWith('/dashboard') || 
@@ -103,6 +98,14 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - files with extensions (static assets)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.).*)',
   ],
 }

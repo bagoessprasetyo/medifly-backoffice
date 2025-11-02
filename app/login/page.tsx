@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -27,17 +28,23 @@ type LoginFormData = z.infer<typeof loginSchema>
 export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
   const { signIn } = useAuth()
+
+  // Memoize form configuration to prevent re-initialization
+  const formConfig = useMemo(() => ({
+    resolver: zodResolver(loginSchema),
+    mode: 'onBlur' as const, // Validate on blur instead of onChange for better performance
+  }), [])
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-  })
+  } = useForm<LoginFormData>(formConfig)
 
-  const onSubmit = async (data: LoginFormData) => {
+  // Memoize the submit handler to prevent re-creation
+  const onSubmit = useCallback(async (data: LoginFormData) => {
     try {
       setLoading(true)
       setError(null)
@@ -49,14 +56,15 @@ export default function LoginPage() {
       }
       
       toast.success('Successfully signed in!')
-      // Let middleware handle the redirect - no manual redirect needed
+      // Immediately redirect to dashboard for better UX
+      router.push('/dashboard')
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred during login'
       setError(errorMessage)
       toast.error(errorMessage)
       setLoading(false) // Only set loading to false on error
     }
-  }
+  }, [signIn, router])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-mint-50 p-4">
