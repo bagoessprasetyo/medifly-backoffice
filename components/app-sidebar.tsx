@@ -190,6 +190,17 @@ const data = {
         },
       ],
     },
+    {
+      title: "AI Chat (Prototype)",
+      url: "/ai-chat",
+      icon: Bot,
+      items: [
+        {
+          title: "Chat with Medifly AI",
+          url: "/ai-chat",
+        },
+      ],
+    },
   ],
   projects: [
     {
