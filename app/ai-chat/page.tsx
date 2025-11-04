@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Send, Paperclip, Mic, MapPin, Clock, DollarSign, X, Building2, UserCircle, Globe, Users, Heart, Stethoscope, ChevronRight, Star, HeartPulse, Bone, Microscope, BrainCircuit } from 'lucide-react';
 import UserTypeCard from '@/components/user-type-card';
 
@@ -9,6 +10,7 @@ type Country = 'malaysia' | 'singapore' | 'thailand' | 'india' | 'turkey' | 'not
 type MedicalCategory = 'core-treatment' | 'preventive-wellness' | 'aesthetic-cosmetic' | null;
 
 const HealthcareAIChatbot = () => {
+  const router = useRouter();
   const [selectedUserType, setSelectedUserType] = useState<UserType>(null);
   const [selectedCountry, setSelectedCountry] = useState<Country>(null);
   const [selectedMedicalCategory, setSelectedMedicalCategory] = useState<MedicalCategory>('core-treatment');
@@ -24,6 +26,11 @@ const HealthcareAIChatbot = () => {
 
   const handleMedicalCategorySelect = (category: MedicalCategory) => {
     setSelectedMedicalCategory(category);
+  };
+
+  const handleSubmit = () => {
+    // Navigate to results page
+    router.push('/ai-chat/results');
   };
 
   const countries = [
@@ -211,7 +218,10 @@ const HealthcareAIChatbot = () => {
                 placeholder="Tell us more about your healthcare needs..."
                 className="w-full h-32 p-4 border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
               />
-              <button className="absolute bottom-4 right-4 w-10 h-10 bg-black rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors">
+              <button 
+                onClick={handleSubmit}
+                className="absolute bottom-4 right-4 w-10 h-10 bg-black rounded-full flex items-center justify-center hover:bg-gray-800 transition-colors"
+              >
                 <Send className="w-4 h-4 text-white" />
               </button>
             </div>
