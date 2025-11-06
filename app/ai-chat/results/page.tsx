@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Building2, UserCircle, Globe, MapPin, Send, CheckCircle, Filter, User, Sparkles, AlertCircle, Loader2, Star } from 'lucide-react';
 import { AIAction } from '../types';
@@ -761,4 +761,10 @@ const MediflyAISearch = () => {
   );
 };
 
-export default MediflyAISearch;
+export default function ResultsPageWrapper() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-screen text-sm text-gray-600">Loading results…</div>}>
+      <MediflyAISearch />
+    </Suspense>
+  );
+}
