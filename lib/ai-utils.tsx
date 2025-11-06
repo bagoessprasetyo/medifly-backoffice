@@ -1,4 +1,4 @@
-import { AIResponseData, SearchResult, SearchFilters } from '@/types/medifly';
+import { AIResponseData, SearchResult, SearchFilters, ActionItem } from '@/types/medifly';
 
 /**
  * Generate AI response using Claude API
@@ -180,7 +180,7 @@ export function generateFallbackResponse(userMessage: string): AIResponseData {
   if (isExperienced) filters.minExperience = 10;
 
   // Determine search type
-  const searchType = isDoctorSearch ? 'doctor' : 'hospital';
+  const searchType: 'hospital' | 'doctor' = isDoctorSearch ? 'doctor' : 'hospital';
 
   // Generate response text
   let responseText = '';
@@ -197,7 +197,7 @@ export function generateFallbackResponse(userMessage: string): AIResponseData {
   }
 
   // Generate actions
-  const actions = [
+  const actions: ActionItem[] = [
     {
       text: `Show more ${specialty || searchType}s${country ? ' in ' + country : ''}`,
       type: searchType,
@@ -206,13 +206,13 @@ export function generateFallbackResponse(userMessage: string): AIResponseData {
     },
     {
       text: searchType === 'hospital' ? 'Find doctors at these hospitals' : 'View hospital affiliations',
-      type: searchType === 'hospital' ? 'doctor' : 'hospital' as 'hospital' | 'doctor',
+      type: searchType === 'hospital' ? 'doctor' : 'hospital',
       query: specialty || 'general',
       filters: { specialty, country }
     },
     {
       text: 'Explore other specialties',
-      type: 'hospital' as const,
+      type: 'hospital',
       query: country ? `hospitals in ${country}` : 'all hospitals',
       filters: { country }
     }
